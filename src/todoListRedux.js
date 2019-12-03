@@ -1,6 +1,11 @@
 export const types = {
   ADD: 'ADD',
-  REMOVE: 'REMOVE'
+  REMOVE: 'REMOVE',
+  UPDATE: 'UPDATE',
+  TOGGLE_COMPLETE: 'TOGGLE_COMPLETE',
+  SHOW_ALL: 'SHOW_ALL',
+  SHOW_ACTIVE: 'SHOW_ACTIVE',
+  SHOW_COMPLETED: 'SHOW_COMPLETED'
 }
 
 export const actionCreators = {
