@@ -1,6 +1,6 @@
 import { Tab } from './Tab'
 import React from 'react'
-import { VisibliltyFilter, VisibilityFilterArray } from './visibilityFilter'
+import { VisibilityFilterArray } from './visibilityFilter'
 
 export const Footer = props => {
   // const handleFilter = condition => todos => todos.filter(condition)

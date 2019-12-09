@@ -15,74 +15,17 @@ const mapStateToProps = state => ({
 })
 
 class App extends Component {
-  state = {
-    todos: [
-      {
-        text: 'Ship app',
-        id: 0,
-        completed: false
-      },
-      {
-        text: 'Write Code',
-        id: 1,
-        completed: false
-      },
-      {
-        text: 'Learn Rust',
-        id: 2,
-        completed: false
-      },
-      {
-        text: 'Dream in Haskell',
-        id: 3,
-        completed: false
-      }
-    ],
-    lastKey: 3,
-    visibility: VF.VisibliltyFilter.ALL
-  }
-
-  onAddTodo = text => {
-    const { todos, lastKey } = this.state
-    const key = lastKey + 1
-    this.setState({
-      todos: [{ text, id: key, completed: false }, ...todos],
-      lastKey: key
-    })
-  }
+  onAddTodo = text => this.props.dispatch(actionCreators.add(text))
 
   onUpdateTodo = text => todo =>
-    this.setState({
-      ...this.state,
-      todos: this.state.todos.map(t =>
-        t.id === todo.id ? (t.text = text) : t.text
-      )
-    })
+    this.props.dispatch(actionCreators.update(text, todo))
 
-  onRemoveTodo = id => {
-    const { todos } = this.state
+  onRemoveTodo = id => this.props.dispatch(actionCreators.remove(id))
 
-    this.setState({
-      ...this.state,
-      todos: todos.filter(todo => todo.id !== id)
-    })
-  }
+  onToggleCompletion = id =>
+    this.props.dispatch(actionCreators.toggleComplete(id))
 
-  onToggleCompletion = id => {
-    const { todos } = this.state
-    this.setState({
-      todos: todos.map(todo => ({
-        ...todo,
-        completed: todo.id === id ? !todo.completed : todo.completed
-      }))
-    })
-  }
-
-  handleFilter = vf =>
-    this.setState({
-      ...this.state,
-      visibility: vf
-    })
+  handleFilter = vf => this.props.dispatch(actionCreators.setVisibility(vf))
 
   toggleList = visibility => {
     switch (visibility) {
@@ -96,8 +39,6 @@ class App extends Component {
   }
 
   render() {
-    const { todos, visibility } = this.state
-
     return (
       <div style={styles.container}>
         <Title>To-Do List</Title>
@@ -106,15 +47,15 @@ class App extends Component {
           onSubmitEditing={this.onAddTodo}
         />
         <List
-          list={todos.filter(this.toggleList(visibility))}
+          list={this.props.todos.filter(this.toggleList(this.props.visibility))}
           onButtonClick={this.onRemoveTodo}
           onToggleComplete={this.onToggleCompletion}
           onClick={this.onUpdateTodo}
         />
         <Footer
-          todos={todos}
+          todos={this.props.todos}
           handleFilter={this.handleFilter}
-          visibility={visibility}
+          visibility={this.props.visibility}
         />
       </div>
     )

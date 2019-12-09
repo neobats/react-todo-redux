@@ -14,4 +14,4 @@ const AppWithStore = (
   </Provider>
 )
 
-render(<AppWithStore />, document.querySelector('#root'))
+render(AppWithStore, document.querySelector('#root'))

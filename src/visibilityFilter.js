@@ -1,7 +1,11 @@
 export const VisibliltyFilter = {
-  ALL: 'ALL',
-  ACTIVE: 'ACTIVE',
-  COMPLETED: 'COMPLETED'
+  ALL: 'SHOW_ALL',
+  ACTIVE: 'SHOW_ACTIVE',
+  COMPLETED: 'SHOW_COMPLETED'
 }
 
-export const VisibilityFilterArray = ['ALL', 'ACTIVE', 'COMPLETED']
+export const VisibilityFilterArray = [
+  'SHOW_ALL',
+  'SHOW_ACTIVE',
+  'SHOW_COMPLETED'
+]
