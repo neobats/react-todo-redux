@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { todosRef } from './firebase'
 
 import { actionCreators } from './todoListRedux'
 import { List } from './List'
@@ -15,15 +16,35 @@ const mapStateToProps = state => ({
 })
 
 class App extends Component {
-  onAddTodo = text => this.props.dispatch(actionCreators.add(text))
+  fetchTodos = () => async dispatch => {
+    dispatch(actionCreators.fetch)
+    todosRef.on('value', snapshot => {
+      const todos = snapshot.val()
+      console.log('shapshot: ', todos)
+      const todoList = []
+      for (let key in todos) {
+        todoList.push({
+          id: key,
+          text: todos[key].text,
+          completed: todos[key].completed
+        })
+      }
+      console.log('the todo list: ', todoList)
+      dispatch(actionCreators.fetchComplete(todoList))
+    })
+  }
 
-  onUpdateTodo = text => todo =>
-    this.props.dispatch(actionCreators.update(text, todo))
+  componentDidMount() {
+    console.log('calling fetchTodos!')
+    this.props.dispatch(this.fetchTodos())
+  }
+
+  onAddTodo = text =>
+    this.props.dispatch(actionCreators.add({ text, completed: false }))
+
+  onUpdateTodo = todo => this.props.dispatch(actionCreators.update(todo))
 
   onRemoveTodo = id => this.props.dispatch(actionCreators.remove(id))
-
-  onToggleCompletion = id =>
-    this.props.dispatch(actionCreators.toggleComplete(id))
 
   handleFilter = vf => this.props.dispatch(actionCreators.setVisibility(vf))
 
@@ -49,7 +70,7 @@ class App extends Component {
         <List
           list={this.props.todos.filter(this.toggleList(this.props.visibility))}
           onButtonClick={this.onRemoveTodo}
-          onToggleComplete={this.onToggleCompletion}
+          onToggleComplete={this.onUpdateTodo}
           onClick={this.onUpdateTodo}
         />
         <Footer

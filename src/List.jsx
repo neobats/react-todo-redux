@@ -12,7 +12,9 @@ const List = props => {
         <Checkbox
           checked={todo.completed}
           value={todo.completed}
-          onChange={() => onToggleComplete(todo.id)}
+          onChange={() =>
+            onToggleComplete({ ...todo, completed: !todo.completed })
+          }
         />
         <DeleteForeverIcon
           style={styles.delete}
